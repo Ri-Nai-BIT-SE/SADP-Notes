@@ -193,6 +193,7 @@ export function generateNavAndSidebar(docsDir: string) {
     sidebar[link] = [
       {
         text: getCleanTitle(dir), // 侧边栏分组的大标题
+        link: link,
         items: createSidebarItems(rootDocsPath, topLevelDirPath),
       },
     ]
