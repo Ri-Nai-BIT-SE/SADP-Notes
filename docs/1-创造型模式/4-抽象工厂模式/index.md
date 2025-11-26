@@ -279,6 +279,116 @@ public class PizzaTestDrive {
 
 ### 4. 抽象工厂模式的核心优势
 
+#### 标准类图（通用结构）
+
+```mermaid
+classDiagram
+    class Client
+    
+    class AbstractFactory {
+        <<Interface>>
+        +CreateProductA()
+        +CreateProductB()
+    }
+    
+    class ConcreteFactory1 {
+        +CreateProductA()
+        +CreateProductB()
+    }
+    
+    class ConcreteFactory2 {
+        +CreateProductA()
+        +CreateProductB()
+    }
+    
+    class AbstractProductA {
+        <<Interface>>
+    }
+    class ProductA1
+    class ProductA2
+    
+    class AbstractProductB {
+        <<Interface>>
+    }
+    class ProductB1
+    class ProductB2
+    
+    AbstractFactory <|.. ConcreteFactory1
+    AbstractFactory <|.. ConcreteFactory2
+    
+    AbstractProductA <|.. ProductA1
+    AbstractProductA <|.. ProductA2
+    AbstractProductB <|.. ProductB1
+    AbstractProductB <|.. ProductB2
+    
+    Client --> AbstractFactory
+    Client ..> AbstractProductA
+    Client ..> AbstractProductB
+    
+    ConcreteFactory1 ..> ProductA1 : 创建
+    ConcreteFactory1 ..> ProductB1 : 创建
+    ConcreteFactory2 ..> ProductA2 : 创建
+    ConcreteFactory2 ..> ProductB2 : 创建
+```
+
+#### Pizza 原料工厂类图
+
+```mermaid
+classDiagram
+    class Pizza {
+        <<Client>>
+        -PizzaIngredientFactory ingredientFactory
+        +prepare()
+    }
+    
+    class PizzaIngredientFactory {
+        <<Interface>>
+        +createDough() Dough
+        +createSauce() Sauce
+    }
+    
+    class NYPizzaIngredientFactory {
+        +createDough() Dough
+        +createSauce() Sauce
+    }
+    
+    class ChicagoPizzaIngredientFactory {
+        +createDough() Dough
+        +createSauce() Sauce
+    }
+    
+    class Dough {
+        <<Interface>>
+    }
+    class ThinCrustDough
+    class ThickCrustDough
+    
+    class Sauce {
+        <<Interface>>
+    }
+    class MarinaraSauce
+    class PlumTomatoSauce
+    
+    PizzaIngredientFactory <|.. NYPizzaIngredientFactory
+    PizzaIngredientFactory <|.. ChicagoPizzaIngredientFactory
+    
+    Dough <|.. ThinCrustDough
+    Dough <|.. ThickCrustDough
+    Sauce <|.. MarinaraSauce
+    Sauce <|.. PlumTomatoSauce
+    
+    Pizza --> PizzaIngredientFactory
+    Pizza ..> Dough
+    Pizza ..> Sauce
+    
+    NYPizzaIngredientFactory ..> ThinCrustDough : 创建
+    NYPizzaIngredientFactory ..> MarinaraSauce : 创建
+    ChicagoPizzaIngredientFactory ..> ThickCrustDough : 创建
+    ChicagoPizzaIngredientFactory ..> PlumTomatoSauce : 创建
+```
+
+**Head First 书中原图：**
+
 ![](QQ_1764083149225.png)
 
 ![](QQ_1764083136948.png)

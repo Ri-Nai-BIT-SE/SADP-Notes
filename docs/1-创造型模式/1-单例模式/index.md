@@ -2,7 +2,55 @@
 
 基于您提供的课件（特别是 `7.Singleton.pdf`），单例模式的核心目的是**确保一个类只有一个实例，并提供一个全局访问点**。
 
-课件中非常形象地把它比作“入场券”（独一无二的），并使用了一个**巧克力工厂锅炉控制器 (ChocolateBoiler)** 的案例来贯穿讲解。
+课件中非常形象地把它比作"入场券"（独一无二的），并使用了一个**巧克力工厂锅炉控制器 (ChocolateBoiler)** 的案例来贯穿讲解。
+
+### 类图
+
+```mermaid
+classDiagram
+    class Singleton {
+        -static Singleton uniqueInstance
+        -Singleton()
+        +static getInstance() Singleton
+    }
+    
+    note for Singleton "私有构造函数\n静态变量保存唯一实例\n静态方法提供全局访问点"
+```
+
+**通用类图（模式角色）**
+
+```mermaid
+classDiagram
+    class Singleton {
+        -static uniqueInstance
+        -Singleton()
+        +static getInstance()
+    }
+
+    %% 说明：单例模式本身只有一个角色（Singleton），这里用通用名字展示
+```
+
+**当前示例类图（ChocolateBoiler）**
+
+```mermaid
+classDiagram
+    class ChocolateBoiler {
+        -boolean empty
+        -boolean boiled
+        -static ChocolateBoiler uniqueInstance
+        -ChocolateBoiler()
+        +static getInstance() ChocolateBoiler
+        +fill()
+        +drain()
+        +boil()
+        +isEmpty() boolean
+        +isBoiled() boolean
+    }
+
+    note for ChocolateBoiler "示例来自 Head First: ChocolateBoiler 单例实现，包含示例方法"
+```
+
+**Head First 书中原图：**
 
 ![](QQ_1764078849110.png)
 

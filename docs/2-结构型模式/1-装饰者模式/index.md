@@ -162,3 +162,141 @@ InputStream in =
 *   **定义**：动态地将责任附加到对象上。若要扩展功能，装饰者提供了比继承更有弹性的替代方案。
 *   **优点**：比继承灵活，可以在运行时动态决定添加什么功能；符合开闭原则。
 *   **缺点**：会产生很多小对象（各种装饰类），如果过度使用会让代码变得复杂难懂（比如 Java I/O 那长长的构造链）。
+
+
+
+---
+
+## 类图与流程图
+
+**Head First 书中原图：**
+
+![](QQ_1764091798380.png)
+
+### 1. 类图 (Class Diagram)
+这张图展示了装饰者模式的核心结构：`CondimentDecorator` 既**继承**了 `Beverage`（为了保持类型一致），又**持有**了一个 `Beverage`（为了进行包装）。
+
+```mermaid
+classDiagram
+    %% 抽象组件
+    class Beverage {
+        <<Abstract>>
+        String description
+        +getDescription() String
+        +cost()* double
+    }
+
+    %% 具体组件 (被装饰的主体)
+    class Espresso {
+        +cost() double
+    }
+    class DarkRoast {
+        +cost() double
+    }
+
+    %% 抽象装饰者
+    class CondimentDecorator {
+        <<Abstract>>
+        +getDescription()* String
+    }
+
+    %% 具体装饰者
+    class Mocha {
+        -Beverage beverage
+        +cost() double
+        +getDescription() String
+    }
+    class Whip {
+        -Beverage beverage
+        +cost() double
+        +getDescription() String
+    }
+
+    %% 继承关系
+    Beverage <|-- Espresso
+    Beverage <|-- DarkRoast
+    Beverage <|-- CondimentDecorator
+    CondimentDecorator <|-- Mocha
+    CondimentDecorator <|-- Whip
+
+    %% 组合关系 (关键点：装饰者持有一个 Beverage 对象)
+    CondimentDecorator o-- Beverage : wraps >
+```
+
+---
+
+### 2. 运行时对象结构图 (Object Graph)
+这张图对应代码中的例子：`new Whip(new Mocha(new Mocha(new DarkRoast())))`。
+它形象地展示了“洋葱圈”或者“俄罗斯套娃”的结构。
+
+```mermaid
+graph LR
+    subgraph "客户端引用 (Client)"
+        Var[beverage2 变量]
+    end
+
+    subgraph "最外层装饰者"
+        Obj1[":Whip 对象"]
+    end
+
+    subgraph "中间装饰者 2"
+        Obj2[":Mocha 对象"]
+    end
+
+    subgraph "中间装饰者 1"
+        Obj3[":Mocha 对象"]
+    end
+
+    subgraph "被装饰主体"
+        Obj4[":DarkRoast 对象"]
+    end
+
+    Var -->|指向| Obj1
+    Obj1 -->|持有 （wraps）| Obj2
+    Obj2 -->|持有 （wraps）| Obj3
+    Obj3 -->|持有 （wraps）| Obj4
+```
+
+---
+
+### 3. 价格计算时序图 (Sequence Diagram)
+这张图展示了当调用最外层的 `.cost()` 时，系统是如何层层深入直到最内层，然后层层返回并累加价格的。
+
+```mermaid
+sequenceDiagram
+    participant Client
+    participant Whip
+    participant Mocha2 as Mocha (第2份)
+    participant Mocha1 as Mocha (第1份)
+    participant DarkRoast
+
+    Note over Client: 调用 beverage2.cost()
+
+    Client->>Whip: cost()
+    activate Whip
+    
+    Whip->>Mocha2: cost()
+    activate Mocha2
+    
+    Mocha2->>Mocha1: cost()
+    activate Mocha1
+    
+    Mocha1->>DarkRoast: cost()
+    activate DarkRoast
+    
+    Note right of DarkRoast: 基础价格
+    DarkRoast-->>Mocha1: 返回 0.99
+    deactivate DarkRoast
+    
+    Note right of Mocha1: 0.99 + 0.20
+    Mocha1-->>Mocha2: 返回 1.19
+    deactivate Mocha1
+
+    Note right of Mocha2: 1.19 + 0.20
+    Mocha2-->>Whip: 返回 1.39
+    deactivate Mocha2
+
+    Note right of Whip: 1.39 + 0.10
+    Whip-->>Client: 返回 1.49 (总价)
+    deactivate Whip
+```

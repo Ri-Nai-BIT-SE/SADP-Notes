@@ -109,6 +109,102 @@ public class PizzaStore {
 
 ### 4. 简单工厂模式总结
 
+#### 类图
+
+```mermaid
+classDiagram
+    class PizzaStore {
+        -SimplePizzaFactory factory
+        +orderPizza(type) Pizza
+    }
+    
+    class SimplePizzaFactory {
+        +createPizza(type) Pizza
+    }
+    
+    class Pizza {
+        <<Abstract>>
+        +prepare()
+        +bake()
+        +cut()
+        +box()
+    }
+    
+    class CheesePizza
+    class PepperoniPizza
+    class ClamPizza
+    class VeggiePizza
+    
+    PizzaStore --> SimplePizzaFactory : 关联
+    SimplePizzaFactory ..> Pizza : 依赖（创建）
+    Pizza <|-- CheesePizza
+    Pizza <|-- PepperoniPizza
+    Pizza <|-- ClamPizza
+    Pizza <|-- VeggiePizza
+```
+
+**通用类图（模式角色）**
+
+```mermaid
+classDiagram
+    class Factory {
+        +createProduct(type) Product
+    }
+
+    class Product {
+        <<Interface>>
+    }
+
+    class ConcreteProductA
+    class ConcreteProductB
+
+    class Client {
+        -Factory factory
+        +operation()
+    }
+
+    Factory ..> Product : creates
+    Product <|-- ConcreteProductA
+    Product <|-- ConcreteProductB
+    Client --> Factory
+```
+
+**当前示例类图（Pizza / SimplePizzaFactory）**
+
+```mermaid
+classDiagram
+    class PizzaStore {
+        -SimplePizzaFactory factory
+        +orderPizza(type) Pizza
+    }
+
+    class SimplePizzaFactory {
+        +createPizza(type) Pizza
+    }
+
+    class Pizza {
+        <<Abstract>>
+        +prepare()
+        +bake()
+        +cut()
+        +box()
+    }
+
+    class CheesePizza
+    class PepperoniPizza
+    class ClamPizza
+    class VeggiePizza
+
+    PizzaStore --> SimplePizzaFactory : uses
+    SimplePizzaFactory ..> Pizza : creates
+    Pizza <|-- CheesePizza
+    Pizza <|-- PepperoniPizza
+    Pizza <|-- ClamPizza
+    Pizza <|-- VeggiePizza
+```
+
+**Head First 书中原图：**
+
 ![](QQ_1764079364629.png)
 
 根据课件的定义：

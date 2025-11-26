@@ -153,7 +153,105 @@ public class PizzaTestDrive {
 
 ### 5. 工厂方法模式总结
 
-![](QQ_1764079516520.png)
+#### 类图
+
+```mermaid
+classDiagram
+    class PizzaStore {
+        <<Abstract>>
+        +orderPizza(type) Pizza
+        #createPizza(type)* Pizza
+    }
+    
+    class NYPizzaStore {
+        #createPizza(type) Pizza
+    }
+    
+    class ChicagoPizzaStore {
+        #createPizza(type) Pizza
+    }
+    
+    class Pizza {
+        <<Abstract>>
+        +prepare()
+        +bake()
+        +cut()
+        +box()
+    }
+    
+    class NYStyleCheesePizza
+    class NYStylePepperoniPizza
+    class ChicagoStyleCheesePizza
+    class ChicagoStylePepperoniPizza
+    
+    PizzaStore <|-- NYPizzaStore
+    PizzaStore <|-- ChicagoPizzaStore
+    
+    Pizza <|-- NYStyleCheesePizza
+    Pizza <|-- NYStylePepperoniPizza
+    Pizza <|-- ChicagoStyleCheesePizza
+    Pizza <|-- ChicagoStylePepperoniPizza
+    
+    NYPizzaStore ..> NYStyleCheesePizza : 创建
+    ChicagoPizzaStore ..> ChicagoStyleCheesePizza : 创建
+```
+
+**通用类图（模式角色）**
+
+```mermaid
+classDiagram
+    class Creator {
+        +factoryMethod() Product
+    }
+
+    class ConcreteCreator
+
+    class Product {
+        <<Interface>>
+    }
+
+    class ConcreteProduct
+
+    Creator <|-- ConcreteCreator
+    Product <|-- ConcreteProduct
+    Creator ..> Product : uses
+```
+
+**当前示例类图（PizzaStore / NYPizzaStore）**
+
+```mermaid
+classDiagram
+    class PizzaStore {
+        <<Abstract>>
+        +orderPizza(type) Pizza
+        #createPizza(type) Pizza
+    }
+
+    class NYPizzaStore
+    class ChicagoPizzaStore
+
+    class Pizza {
+        <<Abstract>>
+        +prepare()
+        +bake()
+        +cut()
+        +box()
+    }
+
+    class NYStyleCheesePizza
+    class ChicagoStyleCheesePizza
+
+    PizzaStore <|-- NYPizzaStore
+    PizzaStore <|-- ChicagoPizzaStore
+    Pizza <|-- NYStyleCheesePizza
+    Pizza <|-- ChicagoStyleCheesePizza
+    NYPizzaStore ..> NYStyleCheesePizza : 创建
+    ChicagoPizzaStore ..> ChicagoStyleCheesePizza : 创建
+```
+
+**Head First 书中原图：**
+
+![](QQ_1764082000724.png)
 
 课件中对**工厂方法模式**的官方定义是：
 
