@@ -223,3 +223,252 @@ classDiagram
 | :--- | :--- | :--- |
 | **推 (Push)** | 主题主动发送具体数据，`update(temp, humidity, pressure)` | 观察者可以直接用；但可能收到不需要的数据 |
 | **拉 (Pull)** | 主题只通知"数据更新了"，`update()` 无参数，观察者自己调用 `getTemperature()` 等方法获取 | 更灵活，观察者按需获取 |
+
+### 7. 观察者模式在 MVC 架构中的应用
+
+**MVC (Model-View-Controller)** 是经典的软件架构模式，而观察者模式是 MVC 架构的核心机制之一。
+
+#### MVC 架构概述
+
+- **Model（模型）**：负责数据和业务逻辑，对应观察者模式中的**主题 (Subject)**
+- **View（视图）**：负责用户界面展示，对应观察者模式中的**观察者 (Observer)**
+- **Controller（控制器）**：负责处理用户输入，协调 Model 和 View
+
+#### MVC 中的观察者模式
+
+在 MVC 架构中，观察者模式实现了 Model 和 View 之间的解耦：
+
+1. **Model 作为主题**：当数据发生变化时，通知所有注册的 View
+2. **View 作为观察者**：订阅 Model 的变化，自动更新界面显示
+3. **Controller 协调**：处理用户输入，修改 Model，触发更新流程
+
+#### 代码示例：MVC 实现
+
+```java
+// Model（主题）
+public class WeatherModel implements Subject {
+    private ArrayList<Observer> observers;
+    private float temperature;
+    private float humidity;
+    private float pressure;
+
+    public WeatherModel() {
+        observers = new ArrayList<>();
+    }
+
+    public void registerObserver(Observer o) {
+        observers.add(o);
+    }
+
+    public void removeObserver(Observer o) {
+        observers.remove(o);
+    }
+
+    public void notifyObservers() {
+        for (Observer observer : observers) {
+            observer.update(temperature, humidity, pressure);
+        }
+    }
+
+    // 数据变化时通知所有视图
+    public void setMeasurements(float temp, float humidity, float pressure) {
+        this.temperature = temp;
+        this.humidity = humidity;
+        this.pressure = pressure;
+        notifyObservers(); // 关键：通知所有观察者
+    }
+}
+
+// View（观察者）
+public class WeatherView implements Observer, DisplayElement {
+    private float temperature;
+    private float humidity;
+    private Subject weatherModel;
+
+    public WeatherView(Subject weatherModel) {
+        this.weatherModel = weatherModel;
+        weatherModel.registerObserver(this);
+    }
+
+    public void update(float temp, float humidity, float pressure) {
+        this.temperature = temp;
+        this.humidity = humidity;
+        display(); // 自动更新界面
+    }
+
+    public void display() {
+        // 更新UI显示
+        System.out.println("View Updated: " + temperature + "F, " + humidity + "%");
+    }
+}
+
+// Controller（控制器）
+public class WeatherController {
+    private WeatherModel model;
+
+    public WeatherController(WeatherModel model) {
+        this.model = model;
+    }
+
+    // 处理用户输入，修改模型
+    public void handleUserInput(float temp, float humidity, float pressure) {
+        // Controller 修改 Model，Model 会自动通知所有 View
+        model.setMeasurements(temp, humidity, pressure);
+    }
+}
+```
+
+#### MVC 架构图
+
+```mermaid
+classDiagram
+    class Model {
+        <<Subject>>
+        +registerObserver(Observer)
+        +removeObserver(Observer)
+        +notifyObservers()
+        +setMeasurements()
+    }
+
+    class View {
+        <<Observer>>
+        +update()
+        +display()
+    }
+
+    class Controller {
+        +handleUserInput()
+    }
+
+    Model --> Observer : notifies
+    View ..|> Observer : implements
+    Controller --> Model : modifies
+    View --> Model : observes
+```
+
+**MVC 的优势：**
+- **解耦**：Model 和 View 通过观察者模式解耦，可以独立变化
+- **可扩展**：可以轻松添加新的 View（观察者），而不修改 Model
+- **可复用**：同一个 Model 可以被多个 View 观察
+
+### 8. 时序图 (Sequence Diagram)
+
+时序图展示了观察者模式中对象之间的交互流程。
+
+#### 注册观察者时序图
+
+```mermaid
+sequenceDiagram
+    participant Client
+    participant WeatherData as WeatherData (Subject)
+    participant Display as CurrentConditionsDisplay (Observer)
+
+    Note over Client: 初始化阶段
+
+    Client->>WeatherData: new WeatherData()
+    activate WeatherData
+
+    Client->>Display: new CurrentConditionsDisplay(weatherData)
+    activate Display
+
+    Display->>WeatherData: registerObserver(this)
+    activate WeatherData
+    Note right of WeatherData: 将观察者添加到列表
+    WeatherData-->>Display: 注册成功
+    deactivate WeatherData
+
+    deactivate Display
+    deactivate WeatherData
+```
+
+#### 数据更新通知时序图
+
+```mermaid
+sequenceDiagram
+    participant Client
+    participant WeatherData as WeatherData (Subject)
+    participant Display1 as CurrentConditionsDisplay
+    participant Display2 as StatisticsDisplay
+    participant Display3 as ForecastDisplay
+
+    Note over Client: 数据变化触发更新
+
+    Client->>WeatherData: setMeasurements(80, 65, 30.4f)
+    activate WeatherData
+
+    WeatherData->>WeatherData: measurementsChanged()
+    WeatherData->>WeatherData: notifyObservers()
+    
+    Note over WeatherData: 遍历所有观察者并通知
+
+    WeatherData->>Display1: update(80, 65, 30.4f)
+    activate Display1
+    Display1->>Display1: display()
+    Note right of Display1: 更新当前状况显示
+    Display1-->>WeatherData: 完成
+    deactivate Display1
+
+    WeatherData->>Display2: update(80, 65, 30.4f)
+    activate Display2
+    Display2->>Display2: display()
+    Note right of Display2: 更新统计信息显示
+    Display2-->>WeatherData: 完成
+    deactivate Display2
+
+    WeatherData->>Display3: update(80, 65, 30.4f)
+    activate Display3
+    Display3->>Display3: display()
+    Note right of Display3: 更新天气预报显示
+    Display3-->>WeatherData: 完成
+    deactivate Display3
+
+    WeatherData-->>Client: 所有观察者已更新
+    deactivate WeatherData
+```
+
+#### MVC 架构中的时序图
+
+```mermaid
+sequenceDiagram
+    participant User
+    participant Controller
+    participant Model as WeatherModel (Subject)
+    participant View1 as WeatherView1 (Observer)
+    participant View2 as WeatherView2 (Observer)
+
+    Note over User,View2: MVC 架构中的观察者模式
+
+    User->>Controller: 输入新数据 (80, 65, 30.4)
+    activate Controller
+
+    Controller->>Model: setMeasurements(80, 65, 30.4f)
+    activate Model
+
+    Model->>Model: notifyObservers()
+    
+    Model->>View1: update(80, 65, 30.4f)
+    activate View1
+    View1->>View1: display()
+    Note right of View1: 更新界面1
+    View1-->>Model: 完成
+    deactivate View1
+
+    Model->>View2: update(80, 65, 30.4f)
+    activate View2
+    View2->>View2: display()
+    Note right of View2: 更新界面2
+    View2-->>Model: 完成
+    deactivate View2
+
+    Model-->>Controller: 更新完成
+    deactivate Model
+
+    Controller-->>User: 界面已更新
+    deactivate Controller
+```
+
+**时序图的关键点：**
+1. **注册阶段**：观察者向主题注册，建立订阅关系
+2. **通知阶段**：主题状态变化时，遍历所有观察者并调用 `update()` 方法
+3. **更新阶段**：每个观察者独立处理更新，互不影响
+4. **解耦**：主题不需要知道观察者的具体实现，只需要调用接口方法
