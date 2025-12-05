@@ -9,7 +9,8 @@
     "docs:dev": "node scripts/generate-indexes.mjs && vitepress dev",
     "docs:build": "node scripts/generate-indexes.mjs && vitepress build",
     "docs:preview": "vitepress preview",
-    "generate-indexes": "node scripts/generate-indexes.mjs"
+    "generate-indexes": "node scripts/generate-indexes.mjs",
+    "flatten-md": "node scripts/flatten-md-files.mjs"
   },
   "dependencies": {
     "@chinese-fonts/maple-mono-cn": "^2.0.0",
