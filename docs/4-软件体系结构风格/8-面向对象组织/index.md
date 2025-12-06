@@ -1,4 +1,6 @@
-## 面向对象组织 (Object-Oriented Organization)
+# 面向对象组织 (Object-Oriented Organization)
+
+## 概述
 
 - **对象 (Object)**：封装数据和操作数据的函数
 - **类 (Class)**：定义对象的模板
@@ -9,9 +11,9 @@
 - **信息隐藏**：对象内部实现对外部不可见
 - **消息传递**：对象之间通过消息（方法调用）进行交互
 
-### 核心概念
+## 核心概念
 
-#### 1. 封装 (Encapsulation)
+### 1. 封装 (Encapsulation)
 
 封装是面向对象的基础，将数据和对数据的操作封装在一起：
 
@@ -34,7 +36,7 @@
 - 接口稳定：可以修改内部实现而不影响外部调用
 - 模块化：每个对象是独立的模块
 
-#### 2. 抽象数据类型 (ADT - Abstract Data Type)
+### 2. 抽象数据类型 (ADT - Abstract Data Type)
 
 面向对象组织强调使用抽象数据类型：
 
@@ -81,9 +83,38 @@ public class ArrayStack<T> implements Stack<T> {
 }
 ```
 
-### 架构示例
+**时序图**（栈操作示例）：
 
-#### 对象交互图
+```mermaid
+sequenceDiagram
+    participant Client as 客户端
+    participant Stack as Stack对象
+    participant Array as 内部数组(私有)
+
+    Client->>Stack: push(item1)
+    Stack->>Array: 存储 item1
+    Array-->>Stack: 确认
+    Stack-->>Client: 返回
+    
+    Client->>Stack: push(item2)
+    Stack->>Array: 存储 item2
+    Array-->>Stack: 确认
+    Stack-->>Client: 返回
+    
+    Client->>Stack: peek()
+    Stack->>Array: 读取栈顶元素
+    Array-->>Stack: 返回 item2
+    Stack-->>Client: 返回 item2
+    
+    Client->>Stack: pop()
+    Stack->>Array: 读取并移除栈顶
+    Array-->>Stack: 返回 item2
+    Stack-->>Client: 返回 item2
+```
+
+## 架构示例
+
+### 对象交互图
 
 ```
 ┌──────────────┐        消息调用        ┌──────────────┐
@@ -103,7 +134,34 @@ public class ArrayStack<T> implements Stack<T> {
 - **Proc Call 对象**：处理过程调用
 - **对象间交互**：通过消息传递（方法调用）进行通信
 
-#### 代码示例：对象组织
+**时序图**：
+
+```mermaid
+sequenceDiagram
+    participant ProcCall as ProcessCall对象
+    participant Manager as ProcessManager对象
+    participant Proc1 as Process对象1
+    participant Proc2 as Process对象2
+
+    ProcCall->>Manager: 请求创建进程("Task1")
+    Manager->>Proc1: new Process("Task1")
+    Manager->>Manager: 添加到进程列表
+    Manager-->>ProcCall: 返回Process对象
+    
+    ProcCall->>Proc1: 发送消息 execute()
+    Proc1->>Proc1: 设置状态为RUNNING
+    Proc1->>Proc1: 执行进程逻辑
+    Proc1->>Proc1: 设置状态为COMPLETED
+    Proc1-->>ProcCall: 执行完成
+    
+    Note over Manager,Proc2: 管理多个进程
+    Manager->>Proc1: 发送消息 execute()
+    Manager->>Proc2: 发送消息 execute()
+    Proc1-->>Manager: 执行完成
+    Proc2-->>Manager: 执行完成
+```
+
+### 代码示例：对象组织
 
 ```java
 // 管理器对象
@@ -167,7 +225,7 @@ public class ProcessCall {
 }
 ```
 
-### 面向对象组织的优势
+## 面向对象组织的优势
 
 1. **模块化**：每个对象是独立的模块，易于理解和维护
 2. **可复用性**：类可以实例化为多个对象，代码可复用
@@ -175,20 +233,20 @@ public class ProcessCall {
 4. **信息隐藏**：内部实现细节被隐藏，接口稳定
 5. **自然建模**：对象可以直观地表示现实世界中的实体
 
-### 面向对象组织的挑战
+## 面向对象组织的挑战
 
 1. **性能开销**：对象创建和方法调用可能带来性能开销
 2. **设计复杂性**：需要合理设计类和对象关系
 3. **过度设计**：可能为了面向对象而过度设计
 4. **理解成本**：需要理解继承、多态等概念
 
-### 与其他架构风格的关系
+## 与其他架构风格的关系
 
 - **与分层架构**：面向对象可以在各层中使用，每层由对象组成
 - **与客户-服务器**：客户端和服务器都可以用面向对象方式组织
 - **与事件系统**：对象可以作为事件源或事件处理器
 
-### 设计原则
+## 设计原则
 
 面向对象组织遵循以下设计原则：
 

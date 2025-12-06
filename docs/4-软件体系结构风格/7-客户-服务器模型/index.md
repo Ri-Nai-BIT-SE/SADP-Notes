@@ -1,4 +1,6 @@
-## 客户-服务器模型 (Client-Server Model)
+# 客户-服务器模型 (Client-Server Model)
+
+## 概述
 
 - **客户端 (Client)**：请求服务的应用程序
 - **服务器 (Server)**：提供服务的应用程序
@@ -9,7 +11,7 @@
 - **集中管理**：服务器集中管理资源和数据
 - **可扩展性**：可以支持多个客户端同时访问
 
-### 架构图
+## 架构图
 
 ```
 ┌─────────────┐        网络          ┌─────────────┐
@@ -23,9 +25,9 @@
 └─────────────┘                     └─────────────┘
 ```
 
-### 典型示例
+## 典型示例
 
-#### 1. Camelot 系统
+### 1. Camelot 系统
 
 **Camelot** 是一个基于客户-服务器模型的分布式系统。
 
@@ -45,6 +47,31 @@
     ↓ 调用实际服务
 服务器应用程序
     ↓ 返回结果
+```
+
+**时序图**：
+
+```mermaid
+sequenceDiagram
+    participant Client as 客户端应用程序
+    participant Stub as RPC 存根
+    participant Network as 网络
+    participant Skeleton as RPC 骨架
+    participant Server as 服务器应用程序
+
+    Client->>Stub: 调用 getData(key)
+    Stub->>Stub: 序列化请求参数
+    Stub->>Network: 发送 RPC 请求
+    Network->>Skeleton: 接收请求
+    Skeleton->>Skeleton: 反序列化参数
+    Skeleton->>Server: 调用实际服务方法
+    Server->>Server: 处理业务逻辑
+    Server->>Skeleton: 返回结果
+    Skeleton->>Skeleton: 序列化响应
+    Skeleton->>Network: 发送响应
+    Network->>Stub: 接收响应
+    Stub->>Stub: 反序列化结果
+    Stub->>Client: 返回数据
 ```
 
 **代码示例**（简化版）：
@@ -81,7 +108,7 @@ public class Client {
 }
 ```
 
-#### 2. Web 应用（HTTP 客户-服务器）
+### 2. Web 应用（HTTP 客户-服务器）
 
 最常见的客户-服务器模型应用：
 
@@ -112,7 +139,23 @@ Web 服务器 (服务器)
 
 3. **客户端**：浏览器渲染 HTML 页面
 
-#### 3. 数据库系统
+**时序图**：
+
+```mermaid
+sequenceDiagram
+    participant Browser as 浏览器(客户端)
+    participant WebServer as Web 服务器
+    participant DB as 数据库
+
+    Browser->>WebServer: HTTP GET /index.html
+    WebServer->>DB: 查询数据
+    DB-->>WebServer: 返回数据
+    WebServer->>WebServer: 生成 HTML
+    WebServer-->>Browser: HTTP 200 OK + HTML
+    Browser->>Browser: 渲染页面
+```
+
+### 3. 数据库系统
 
 ```
 应用程序 (客户端)
@@ -124,21 +167,21 @@ Web 服务器 (服务器)
 应用程序
 ```
 
-### 客户-服务器模型的优势
+## 客户-服务器模型的优势
 
 1. **集中管理**：数据和业务逻辑集中在服务器，便于管理和维护
 2. **安全性**：服务器可以集中实施安全策略
 3. **可扩展性**：可以支持大量客户端
 4. **资源共享**：多个客户端共享服务器资源
 
-### 客户-服务器模型的挑战
+## 客户-服务器模型的挑战
 
 1. **单点故障**：服务器故障会影响所有客户端
 2. **网络依赖**：客户端依赖网络连接
 3. **性能瓶颈**：服务器可能成为性能瓶颈
 4. **可扩展性限制**：服务器需要处理所有客户端请求
 
-### 变体：多层客户-服务器架构
+## 变体：多层客户-服务器架构
 
 为了克服单层客户-服务器的限制，发展出多层架构：
 

@@ -1,8 +1,12 @@
+# 工厂方法模式 (Factory Method Pattern)
+
+## 概述
+
 好的，我们继续深入。在讲完简单工厂后，课件（`8.Factory.pdf`）引入了一个新的挑战，从而引出了**工厂方法模式 (Factory Method Pattern)**。
 
-这一章节的核心在于解决**“如何在保持标准流程控制的同时，允许不同地区有个性化的实现”**。
+这一章节的核心在于解决**"如何在保持标准流程控制的同时，允许不同地区有个性化的实现"**。
 
-### 1. 场景升级：加盟店与风味差异
+## 1. 场景升级：加盟店与风味差异
 
 假设你的 Pizza 店非常成功，开始在不同地区开分店（加盟）。
 *   **纽约店 (NYStyle)**：顾客喜欢薄饼（Thin Crust）和少许酱料。
@@ -11,7 +15,7 @@
 **遇到的问题：**
 如果你继续使用之前的 `SimplePizzaFactory`，你就需要写很多 `if-else` 来判断是“纽约风味”还是“芝加哥风味”。更重要的是，作为总店，你希望控制 Pizza 的制作流程（`prepare`, `bake`, `cut`, `box` 必须按顺序执行），但你必须允许分店自己决定如何“创建”具体的 Pizza（比如纽约店创建的是 `NYStyleCheesePizza`）。
 
-### 2. 解决方案：工厂方法
+## 2. 解决方案：工厂方法
 
 课件中采取的办法是：**把 `createPizza` 方法放回 `PizzaStore` 中，但把它声明为“抽象方法”**。
 
@@ -19,9 +23,9 @@
 1.  它在 `orderPizza` 方法中定义了**标准流程**。
 2.  它把**具体的创建步骤**（`createPizza`）推迟到子类（如 `NYPizzaStore`）去实现。
 
-### 3. 代码实现
+## 3. 代码实现
 
-#### A. 抽象的创建者 (Abstract Creator)
+### A. 抽象的创建者 (Abstract Creator)
 
 `PizzaStore` 现在是一个抽象类。
 
@@ -52,7 +56,7 @@ public abstract class PizzaStore {
 }
 ```
 
-#### B. 具体的创建者 (Concrete Creator)
+### B. 具体的创建者 (Concrete Creator)
 
 每个地区都有自己的子类，负责实现“怎么造Pizza”。
 
@@ -97,7 +101,7 @@ public class ChicagoPizzaStore extends PizzaStore {
 }
 ```
 
-#### C. 具体的产品 (Concrete Product)
+### C. 具体的产品 (Concrete Product)
 
 具体的 Pizza 类也需要体现地区差异。
 
@@ -126,7 +130,7 @@ public class ChicagoStyleCheesePizza extends Pizza {
 }
 ```
 
-### 4. 客户端如何使用
+## 4. 客户端如何使用
 
 现在，如果我想吃纽约风味的皮萨：
 
@@ -151,9 +155,9 @@ public class PizzaTestDrive {
 }
 ```
 
-### 5. 工厂方法模式总结
+## 5. 工厂方法模式总结
 
-#### 类图
+### 类图
 
 ```mermaid
 classDiagram

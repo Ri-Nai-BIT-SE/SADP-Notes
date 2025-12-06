@@ -1,8 +1,12 @@
+# 抽象工厂模式 (Abstract Factory Pattern)
+
+## 概述
+
 好的，我们进入创建型模式的最终章：**抽象工厂模式 (Abstract Factory Pattern)**。
 
 在《Head First 设计模式》中，这个模式通过**Pizza 原料工厂**的例子来讲解。这个模式是为了解决**"产品族"**（Product Family）的问题。
 
-### 1. 场景：原料族的约束
+## 1. 场景：原料族的约束
 
 在此之前，工厂方法模式解决的是生产"一个产品"（比如一个 Pizza）的问题。
 
@@ -10,15 +14,15 @@
 *   **约束条件**：如果你要做 **纽约风味 (NY Style)** 的 Pizza，那么必须使用 `ThinCrustDough`（薄面团）、`MarinaraSauce`（大蒜番茄酱）、`ReggianoCheese`（雷吉亚诺芝士）、`FreshClams`（新鲜蛤蜊）。你不能把芝加哥的 `ThickCrustDough` 和纽约的 `MarinaraSauce` 混在一起（在这个特定的工厂逻辑下）。
 *   **问题**：我们需要确保在制作 Pizza 时，使用的**一系列**原料是**配套**的，不能乱搭。纽约风味的 Pizza 必须全部使用纽约风格的原料。
 
-### 2. 核心定义
+## 2. 核心定义
 
 > **抽象工厂模式**：提供一个接口，用于创建**相关或依赖对象的家族**，而不需要明确指定具体类。
 
-### 3. 代码实现（基于 Head First Pizza 原料工厂案例）
+## 3. 代码实现（基于 Head First Pizza 原料工厂案例）
 
 我们需要定义两个层面的接口：一个是原料的接口（面团、酱料、芝士等），一个是工厂的接口（生产这一套原料的标准）。
 
-#### A. 抽象产品 (Abstract Products)
+### A. 抽象产品 (Abstract Products)
 
 首先定义各种原料的标准接口。
 
@@ -39,7 +43,7 @@ public interface Cheese {
 // ... 其他原料接口（Clams, Veggies, Pepperoni 等）
 ```
 
-#### B. 具体产品 (Concrete Products)
+### B. 具体产品 (Concrete Products)
 
 定义不同地区的具体原料实现。
 
@@ -67,7 +71,7 @@ public class PlumTomatoSauce implements Sauce {
 // ... 其他芝加哥原料（MozzarellaCheese, FrozenClams 等）
 ```
 
-#### C. 抽象工厂 (Abstract Factory)
+### C. 抽象工厂 (Abstract Factory)
 
 这是模式的核心。它定义了**一组**方法，每个方法负责创建一个种类的原料。
 
@@ -84,7 +88,7 @@ public interface PizzaIngredientFactory {
 }
 ```
 
-#### D. 具体工厂 (Concrete Factories)
+### D. 具体工厂 (Concrete Factories)
 
 每个地区都有一个工厂，**确保生产出来的原料是配套的**。
 
@@ -128,7 +132,7 @@ public class ChicagoPizzaIngredientFactory implements PizzaIngredientFactory {
 }
 ```
 
-#### E. 使用原料工厂的 Pizza 类
+### E. 使用原料工厂的 Pizza 类
 
 现在，Pizza 类通过**组合**的方式使用原料工厂来获取原料。
 
@@ -195,7 +199,7 @@ public class ClamPizza extends Pizza {
 }
 ```
 
-#### F. 客户端 (PizzaStore)
+### F. 客户端 (PizzaStore)
 
 现在，`PizzaStore` 使用原料工厂来创建 Pizza，确保原料的配套性。
 
@@ -277,9 +281,9 @@ public class PizzaTestDrive {
 *   如果要把整套系统换成芝加哥风格，只需要在 `createPizza` 中创建 `ChicagoPizzaIngredientFactory`，下面的代码一行都不用动。
 *   **保证了原料的配套性**：纽约的 CheesePizza 自动使用纽约风格的所有原料，不会出现混搭的情况。
 
-### 4. 抽象工厂模式的核心优势
+## 4. 抽象工厂模式的核心优势
 
-#### 标准类图（通用结构）
+### 标准类图（通用结构）
 
 ```mermaid
 classDiagram
@@ -331,7 +335,7 @@ classDiagram
     ConcreteFactory2 ..> ProductB2 : 创建
 ```
 
-#### Pizza 原料工厂类图
+### Pizza 原料工厂类图
 
 ```mermaid
 classDiagram
@@ -405,7 +409,7 @@ classDiagram
    *   在 `CaliforniaPizzaStore` 中使用新工厂
    *   **不需要修改任何现有代码**，完美符合开闭原则。
 
-### 5. 三种工厂模式的对比总结
+## 5. 三种工厂模式的对比总结
 
 这是考试或面试中常问的区别，请务必厘清：
 

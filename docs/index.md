@@ -24,24 +24,31 @@ features:
     details: 每个模式都配有详细的课件案例和实现探讨，案例主要来自《Head First 设计模式》
     link: /1-创造型模式/1-单例模式/
 ---
+# 软件体系结构与设计模式
+
+## 概述
+
 根据您提供的五份PDF课件内容，以下是课程中涵盖的**设计模式（Design Patterns）**以及**软件体系结构风格（Architectural Styles）**的详细总结：
 
-### 零、 基础知识 (Fundamentals)
+## 零、 基础知识 (Fundamentals)
 
-在学习设计模式之前，理解 UML 类图是必不可少的。类图中的各种关系（继承、实现、组合、聚合、关联、依赖）是理解设计模式类图的基础。
+在学习设计模式之前，理解 UML 类图和设计原则是必不可少的。这些基础知识是理解设计模式的理论基础。
 
-*   **[UML 类图关系详解](/0-UML类图基础/)**
-    *   **核心内容：** 6 种 UML 类图关系的详细说明，包括泛化、实现、组合、聚合、关联、依赖
-    *   **学习价值：** 掌握如何通过箭头的形状和线条的虚实来理解类之间的关系
-    *   **实践应用：** 结合简单工厂模式等实际案例，帮助理解设计模式类图
+*   **[基础知识总览](/0-基础知识/)**
+    *   **核心内容：** 包含 UML 类图关系详解和设计原则两大部分
+    *   **学习价值：** 掌握 UML 类图是阅读设计模式类图的基础，理解设计原则是理解设计模式设计思想的基础
+    *   **实践应用：** 在学习每个设计模式时，结合 UML 类图理解结构，结合设计原则理解设计思想
+    *   **子章节：**
+        *   [UML 类图关系详解](/0-基础知识/1-UML类图基础/) - 6 种 UML 类图关系的详细说明
+        *   [设计原则](/0-基础知识/2-设计原则/) - Head First 设计模式的"三大原则"和 SOLID 原则
 
-### 一、 设计模式 (Design Patterns)
+## 一、 设计模式 (Design Patterns)
 
 这些模式主要出自《设计模式：可复用面向对象软件的基础》（GoF）一书，课件中按照创建型、结构型和行为型进行了分类讲解。
 
 > **📚 参考书目说明：** 本课程中的设计模式案例和示例主要来源于《Head First 设计模式》（Head First Design Patterns）一书。该书以生动有趣的案例（如巧克力工厂、Pizza店、星巴克咖啡、鸭子模拟器等）深入浅出地讲解设计模式，是学习设计模式的优秀入门教材。
 
-#### 1. 创建型模式 (Creational Patterns)
+### 1. 创建型模式 (Creational Patterns)
 *   **[单例模式 (Singleton Pattern)](/1-创造型模式/1-单例模式/)**
     *   **核心概念：** 确保一个类只有一个实例，并提供一个全局访问点。
     *   **课件案例：** 巧克力工厂的锅炉控制（ChocolateBoiler）。
@@ -56,7 +63,7 @@ features:
     *   **核心概念：** 提供一个接口，用于创建相关或依赖对象的家族，而不需要明确指定具体类。
     *   **课件案例：** Pizza原料工厂（创建面团、酱料、芝士等一系列原料族）；生产电脑配件（鼠标、键盘）的工厂。
 
-#### 2. 结构型模式 (Structural Patterns)
+### 2. 结构型模式 (Structural Patterns)
 *   **[装饰者模式 (Decorator Pattern)](/2-结构型模式/1-装饰者模式/)**
     *   **核心概念：** 动态地将责任附加到对象上。若要扩展功能，装饰者提供了比继承更有弹性的替代方案。
     *   **课件案例：** 星巴克咖啡（Beverage），通过加入调料（Mocha, Milk, Soy, Whip）来计算价格和描述；Java I/O流的设计。
@@ -67,7 +74,7 @@ features:
     *   **核心概念：** 为另一个对象提供一个替身或占位符以控制对这个对象的访问。
     *   **课件案例：** 图像加载（ImageProxy），在图片实际加载完成前显示占位，加载完成后显示真实图片。
 
-#### 3. 行为型模式 (Behavioral Patterns)
+### 3. 行为型模式 (Behavioral Patterns)
 *   **[策略模式 (Strategy Pattern)](/3-行为型模式/1-策略模式/)**
     *   **核心概念：** 定义算法族，分别封装起来，让他们之间可以互相替换，让算法的变化独立于使用算法的客户。
     *   **课件案例：** 鸭子模拟器（SimUDuck）。将"飞行行为"（FlyBehavior）和"叫声行为"（QuackBehavior）封装成接口，鸭子类通过组合（Composition）而非继承来使用这些行为。
@@ -83,7 +90,7 @@ features:
 
 ---
 
-### 二、 软件体系结构风格 (Software Architectural Styles)
+## 二、 软件体系结构风格 (Software Architectural Styles)
 
 课件专门有一部分（第5个PDF）讨论了比设计模式更高层面的架构风格，主要通过 **KWIC（KeyWord In Context）** 索引系统作为案例来对比不同风格。
 
@@ -105,8 +112,20 @@ features:
 6.  **[批处理序列 (Batch Sequential)](/4-软件体系结构风格/6-批处理序列/)**
     *   **特点：** 每一步完全结束后，下一步才开始，数据作为一个整体传递。
 
-### 总结核心设计原则 (课件中反复强调)
+## 总结核心设计原则 (课件中反复强调)
+
+设计原则是设计模式的理论基础，详细内容请参考：
+
+*   **[设计原则详解](/0-设计原则/)**
+
+**核心原则速览：**
 *   **封装变化 (Encapsulate what varies)**
 *   **多用组合，少用继承 (Favor composition over inheritance)**
 *   **针对接口编程，不针对实现编程 (Program to an interface, not an implementation)**
-*   **为了交互对象之间的松耦合设计而努力 (Strive for loosely coupled design between objects that interact)**
+*   **开闭原则 (Open-Closed Principle, OCP)**
+*   **为交互对象之间的松耦合设计而努力 (Strive for loosely coupled design between objects that interact)**
+*   **单一职责原则 (Single Responsibility Principle, SRP)**
+*   **依赖倒置原则 (Dependency Inversion Principle, DIP)**
+*   **里氏替换原则 (Liskov Substitution Principle, LSP)**
+*   **接口隔离原则 (Interface Segregation Principle, ISP)**
+*   **最少知识原则 (Principle of Least Knowledge)**

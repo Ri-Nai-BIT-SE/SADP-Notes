@@ -1,6 +1,6 @@
-## 观察者模式 (Observer Pattern)
+# 观察者模式 (Observer Pattern)
 
-### 1. 场景：Weather-O-Rama 气象站
+## 1. 场景：Weather-O-Rama 气象站
 
 假设我们要为"Weather-O-Rama"公司开发气象站系统。
 
@@ -28,16 +28,16 @@ public class WeatherData {
 
 这种写法违反了**开闭原则**，也导致了`WeatherData`与具体的布告板**紧耦合**。
 
-### 2. 核心定义
+## 2. 核心定义
 
 > **观察者模式**：定义了对象之间的一对多依赖，这样一来，当一个对象改变状态时，它的所有依赖者都会收到通知并自动更新。
 
 - **主题 (Subject)**：即"出版者"，拥有数据的人（`WeatherData`）。
 - **观察者 (Observer)**：即"订阅者"，需要数据的人（各种布告板）。
 
-### 3. 代码实现
+## 3. 代码实现
 
-#### A. 定义接口
+### A. 定义接口
 
 ```java
 // 主题接口：管理观察者的注册和移除，以及通知功能
@@ -59,7 +59,7 @@ public interface DisplayElement {
 }
 ```
 
-#### B. 实现主题 (Concrete Subject)
+### B. 实现主题 (Concrete Subject)
 
 ```java
 import java.util.ArrayList;
@@ -111,7 +111,7 @@ public class WeatherData implements Subject {
 }
 ```
 
-#### C. 实现观察者 (Concrete Observer)
+### C. 实现观察者 (Concrete Observer)
 
 以"当前状况布告板"为例：
 
@@ -141,7 +141,7 @@ public class CurrentConditionsDisplay implements Observer, DisplayElement {
 }
 ```
 
-#### D. 客户端测试
+### D. 客户端测试
 
 ```java
 public class WeatherStation {
@@ -163,7 +163,7 @@ public class WeatherStation {
 }
 ```
 
-### 4. 类图
+## 4. 类图
 
 ```mermaid
 classDiagram
@@ -211,30 +211,30 @@ classDiagram
     CurrentConditionsDisplay --> Subject : registers with
 ```
 
-### 5. 核心设计原则
+## 5. 核心设计原则
 
 > **为了交互对象之间的松耦合设计而努力 (Strive for loosely coupled design between objects that interact)。**
 
 - **松耦合**：`WeatherData` 只知道观察者实现了 `Observer` 接口，不需要知道观察者具体是谁、做了什么。这使得我们可以随时增加新的布告板，而不需要修改 `WeatherData` 的代码。
 
-### 6. 推(Push) vs 拉(Pull)
+## 6. 推(Push) vs 拉(Pull)
 
 | 模式 | 说明 | 优缺点 |
 | :--- | :--- | :--- |
 | **推 (Push)** | 主题主动发送具体数据，`update(temp, humidity, pressure)` | 观察者可以直接用；但可能收到不需要的数据 |
 | **拉 (Pull)** | 主题只通知"数据更新了"，`update()` 无参数，观察者自己调用 `getTemperature()` 等方法获取 | 更灵活，观察者按需获取 |
 
-### 7. 观察者模式在 MVC 架构中的应用
+## 7. 观察者模式在 MVC 架构中的应用
 
 **MVC (Model-View-Controller)** 是经典的软件架构模式，而观察者模式是 MVC 架构的核心机制之一。
 
-#### MVC 架构概述
+### MVC 架构概述
 
 - **Model（模型）**：负责数据和业务逻辑，对应观察者模式中的**主题 (Subject)**
 - **View（视图）**：负责用户界面展示，对应观察者模式中的**观察者 (Observer)**
 - **Controller（控制器）**：负责处理用户输入，协调 Model 和 View
 
-#### MVC 中的观察者模式
+### MVC 中的观察者模式
 
 在 MVC 架构中，观察者模式实现了 Model 和 View 之间的解耦：
 
@@ -242,7 +242,7 @@ classDiagram
 2. **View 作为观察者**：订阅 Model 的变化，自动更新界面显示
 3. **Controller 协调**：处理用户输入，修改 Model，触发更新流程
 
-#### 代码示例：MVC 实现
+### 代码示例：MVC 实现
 
 ```java
 // Model（主题）
@@ -318,7 +318,7 @@ public class WeatherController {
 }
 ```
 
-#### MVC 架构图
+### MVC 架构图
 
 ```mermaid
 classDiagram
@@ -351,11 +351,11 @@ classDiagram
 - **可扩展**：可以轻松添加新的 View（观察者），而不修改 Model
 - **可复用**：同一个 Model 可以被多个 View 观察
 
-### 8. 时序图 (Sequence Diagram)
+## 8. 时序图 (Sequence Diagram)
 
 时序图展示了观察者模式中对象之间的交互流程。
 
-#### 注册观察者时序图
+### 注册观察者时序图
 
 ```mermaid
 sequenceDiagram
@@ -381,7 +381,7 @@ sequenceDiagram
     deactivate WeatherData
 ```
 
-#### 数据更新通知时序图
+### 数据更新通知时序图
 
 ```mermaid
 sequenceDiagram
@@ -426,7 +426,7 @@ sequenceDiagram
     deactivate WeatherData
 ```
 
-#### MVC 架构中的时序图
+### MVC 架构中的时序图
 
 ```mermaid
 sequenceDiagram

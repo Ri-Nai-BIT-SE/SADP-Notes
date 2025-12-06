@@ -1,5 +1,7 @@
 # UML 类图关系详解
 
+## 概述
+
 UML（统一建模语言）类图是设计模式通用的"世界语"。要看懂标准类图，核心就在于辨识**箭头的形状**和**线条的虚实**。
 
 这直接决定了代码中类与类是**继承**、**实现**、**持有（字段）**还是**临时使用（局部变量）**的关系。
@@ -44,7 +46,7 @@ public class CheesePizza extends Pizza {
 *   **代码对应：** `implements`
 *   **耦合度：** 强（仅次于泛化）
 
-### 代码示例
+#### 代码示例
 
 ```java
 public class Dog implements Animal {
@@ -75,7 +77,7 @@ public class Dog implements Animal {
 *   **代码对应：** 成员变量，通常在构造函数中直接 `new` 出来，不让外部修改，生命周期绑定
 *   **耦合度：** 很强
 
-### 代码示例
+#### 代码示例
 
 ```java
 public class Person {
@@ -109,7 +111,7 @@ public class Person {
 *   **代码对应：** 成员变量，通常通过构造函数**传参**进来（Setter 注入）
 *   **耦合度：** 中等偏强
 
-### 代码示例
+#### 代码示例
 
 ```java
 public class Class {
@@ -155,7 +157,7 @@ public class Class {
 *   **代码对应：** **成员变量 (Field)**
 *   **耦合度：** 中等
 
-### 代码示例
+#### 代码示例
 
 ```java
 public class PizzaStore {
@@ -196,7 +198,7 @@ public class PizzaStore {
     3.  **静态方法调用**
 *   **耦合度：** 最弱
 
-### 代码示例
+#### 代码示例
 
 ```java
 public class Driver {

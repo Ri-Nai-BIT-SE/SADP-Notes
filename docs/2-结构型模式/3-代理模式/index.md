@@ -1,26 +1,26 @@
-## 代理模式 (Proxy Pattern)
+# 代理模式 (Proxy Pattern)
 
-### 1. 场景：文档编辑器 (Document Editor)
+## 1. 场景：文档编辑器 (Document Editor)
 
 试想我们在打开一个包含大量高分辨率图片的 Word 文档。
 
 - **问题**：如果一打开文档就把所有图片都从硬盘读取并加载到内存中，打开速度会非常慢，且消耗巨大内存。
 - **需求**：我们希望文档能"秒开"。图片只有在用户滚动到那一页，确实需要显示的时候，才去真正加载。
 
-### 2. 解决方案：使用代理 (Proxy)
+## 2. 解决方案：使用代理 (Proxy)
 
 我们需要一个**替身**或**占位符**来代替真正的图片对象。这个替身很轻量，创建很快。
 
 - **ImageProxy (代理)**：存在于内存中，负责占位。
 - **Image (真实对象)**：存在于硬盘上，加载昂贵。
 
-### 3. 核心定义
+## 3. 核心定义
 
 > **代理模式**：为另一个对象提供一个替身或占位符以**控制对这个对象的访问**。
 
-### 4. 结构与代码逻辑
+## 4. 结构与代码逻辑
 
-#### A. 共同接口 (Subject/Graphic)
+### A. 共同接口 (Subject/Graphic)
 
 无论是代理还是真实图片，对客户（编辑器）来说都是"图形"，可以绘制，可以获取尺寸。
 
@@ -34,7 +34,7 @@ public interface Graphic {
 }
 ```
 
-#### B. 真实对象 (RealSubject)
+### B. 真实对象 (RealSubject)
 
 这是真正干重活的类，负责加载图片数据。
 
@@ -49,7 +49,7 @@ public class Image implements Graphic {
 }
 ```
 
-#### C. 代理对象 (Proxy)
+### C. 代理对象 (Proxy)
 
 持有一个对真实对象的引用（初始为空）。
 
@@ -87,7 +87,7 @@ public class ImageProxy implements Graphic {
 }
 ```
 
-#### D. 客户端使用
+### D. 客户端使用
 
 ```java
 public class TextDocument {
@@ -108,7 +108,7 @@ public class TextDocument {
 }
 ```
 
-### 5. 类图
+## 5. 类图
 
 ```mermaid
 classDiagram
@@ -146,13 +146,13 @@ classDiagram
     Client --> Graphic : uses
 ```
 
-### 6. 对象图解
+## 6. 对象图解
 
 - **在内存中**：`aTextDocument` 指向 `anImageProxy` (只存了文件名)。
 - **在硬盘上**：`anImage` (存了实际数据)。
 - 虚线箭头表示：只有需要时，Proxy 才会把硬盘上的 Image 加载进内存。
 
-### 7. 代理模式的常见变体
+## 7. 代理模式的常见变体
 
 | 类型 | 说明 | 示例 |
 | :--- | :--- | :--- |
@@ -160,7 +160,7 @@ classDiagram
 | **远程代理 (Remote Proxy)** | 代表在不同地址空间（如远程服务器）的对象 | Java RMI |
 | **保护代理 (Protection Proxy)** | 控制对原始对象的访问权限 | 权限检查 |
 
-### 8. 核心考点
+## 8. 核心考点
 
 - **"控制访问"**：代理控制客户端对真实对象的访问
 - **"延迟加载"**：虚拟代理实现懒加载，优化性能

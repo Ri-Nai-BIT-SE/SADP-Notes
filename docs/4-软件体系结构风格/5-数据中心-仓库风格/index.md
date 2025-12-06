@@ -1,4 +1,6 @@
-## 数据中心/仓库风格 (Repository / Blackboard)
+# 数据中心/仓库风格 (Repository / Blackboard)
+
+## 概述
 
 - **中央数据存储**：所有组件共享的数据仓库
 - **组件**：围绕数据存储进行读写操作

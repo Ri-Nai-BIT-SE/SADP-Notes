@@ -1,13 +1,15 @@
-## 解释器模式 (Interpreter Pattern)
+# 解释器模式 (Interpreter Pattern)
+
+## 概述
 
 这个模式通常用于处理**语言的语法分析**。在日常业务开发中用得不多，但在特定领域（编译器、正则表达式引擎、SQL解析、规则引擎）非常重要。
 
-### 1. 场景与定义
+## 1. 场景与定义
 
 - **场景**：假设你需要开发一个程序来处理正则表达式（如 `raining & (dogs | cats) *`），或者设计一个简单的布尔逻辑查询语言。
 - **核心定义**：给定一个语言，定义它的文法的一种表示，并定义一个解释器，这个解释器使用该表示来解释语言中的句子。
 
-### 2. 核心结构：组合模式的变体
+## 2. 核心结构：组合模式的变体
 
 类图非常像**组合模式 (Composite Pattern)**。因为"语法树"（Abstract Syntax Tree, AST）本质上就是一个递归的树形结构。
 
@@ -16,11 +18,11 @@
 - **NonterminalExpression (非终结符表达式)**：代表文法中的规则（例如 AND, OR, 循环）。通常包含（聚合）其他的 `AbstractExpression`。
 - **Context (上下文)**：包含解释器之外的一些全局信息（例如输入字符串、变量的值）。
 
-### 3. 代码实现
+## 3. 代码实现
 
 实现一个简单的**布尔逻辑解释器**，解释类似 `"London" AND "Raining"` 这样的规则。
 
-#### A. 抽象表达式接口
+### A. 抽象表达式接口
 
 ```java
 public interface Expression {
@@ -29,7 +31,7 @@ public interface Expression {
 }
 ```
 
-#### B. 终结符表达式 (Terminal Expression)
+### B. 终结符表达式 (Terminal Expression)
 
 最基础的单元，用来判断文本中是否包含某个具体的单词。
 
@@ -49,7 +51,7 @@ public class TerminalExpression implements Expression {
 }
 ```
 
-#### C. 非终结符表达式 (Non-terminal Expression)
+### C. 非终结符表达式 (Non-terminal Expression)
 
 实现 `OrExpression` 和 `AndExpression`，它们内部持有其他的表达式。
 
@@ -89,7 +91,7 @@ public class AndExpression implements Expression {
 }
 ```
 
-#### D. 客户端测试
+### D. 客户端测试
 
 构建语法树并进行解释。
 
@@ -124,7 +126,7 @@ public class InterpreterPatternDemo {
 }
 ```
 
-### 4. 类图
+## 4. 类图
 
 ```mermaid
 classDiagram
@@ -161,7 +163,7 @@ classDiagram
     AndExpression --> Expression : contains
 ```
 
-### 5. 总结
+## 5. 总结
 
 - **适用场景**：当有一个语言需要解释执行，并且你可以将该语言中的句子表示为一个抽象语法树时。例如：SQL 解析、计算器表达式（1+2*3）、正则表达式。
 

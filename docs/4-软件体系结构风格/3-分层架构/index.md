@@ -1,4 +1,6 @@
-## 分层架构 (Layered Architecture)
+# 分层架构 (Layered Architecture)
+
+## 概述
 
 - 系统分为若干层，每层只与**相邻层**交互
 - 上层依赖下层，下层不依赖上层
@@ -8,9 +10,9 @@
 - **分层隔离**：层与层之间通过接口通信，不直接访问内部实现
 - **单向依赖**：上层可以调用下层，下层不能调用上层
 
-### 典型分层示例
+## 典型分层示例
 
-#### 1. 三层 Web 应用架构
+### 1. 三层 Web 应用架构
 
 ```
 表示层 (Presentation Layer)
@@ -22,7 +24,28 @@
 数据库 (Database)
 ```
 
-#### 2. OSI 七层参考模型
+**时序图**：
+
+```mermaid
+sequenceDiagram
+    participant User as 用户
+    participant Presentation as 表示层
+    participant Business as 业务逻辑层
+    participant DataAccess as 数据访问层
+    participant DB as 数据库
+
+    User->>Presentation: 提交请求
+    Presentation->>Business: 调用业务方法
+    Business->>Business: 处理业务逻辑
+    Business->>DataAccess: 调用数据访问方法
+    DataAccess->>DB: 执行 SQL 查询
+    DB-->>DataAccess: 返回数据
+    DataAccess-->>Business: 返回数据对象
+    Business-->>Presentation: 返回业务结果
+    Presentation-->>User: 返回响应
+```
+
+### 2. OSI 七层参考模型
 
 **OSI (Open Systems Interconnection)** 是国际标准化组织（ISO）定义的网络通信参考模型：
 
@@ -38,7 +61,7 @@
 
 **示例系统**：ARC 网络遵循 OSI 参考模型
 
-#### 3. TCP/IP 协议栈（四层模型）
+### 3. TCP/IP 协议栈（四层模型）
 
 TCP/IP 是实际应用最广泛的网络协议栈，通常分为四层：
 
@@ -99,6 +122,36 @@ TCP/IP 是实际应用最广泛的网络协议栈，通常分为四层：
 网络接口层：以太网帧（包含 MAC 地址）
     ↓
 物理传输：比特流
+```
+
+**时序图**（数据封装与解封装）：
+
+```mermaid
+sequenceDiagram
+    participant App as 应用层
+    participant Transport as 传输层
+    participant Network as 网络层
+    participant Interface as 网络接口层
+    participant Physical as 物理层
+
+    Note over App,Physical: 发送数据（封装过程）
+    App->>Transport: HTTP 请求数据
+    Transport->>Transport: 添加 TCP 头
+    Transport->>Network: TCP 段
+    Network->>Network: 添加 IP 头
+    Network->>Interface: IP 数据包
+    Interface->>Interface: 添加帧头帧尾
+    Interface->>Physical: 以太网帧
+    Physical->>Physical: 转换为比特流
+    
+    Note over App,Physical: 接收数据（解封装过程）
+    Physical-->>Interface: 接收比特流
+    Interface->>Interface: 移除帧头帧尾
+    Interface-->>Network: 提取 IP 数据包
+    Network->>Network: 移除 IP 头
+    Network-->>Transport: 提取 TCP 段
+    Transport->>Transport: 移除 TCP 头
+    Transport-->>App: HTTP 响应数据
 ```
 
 **分层架构的优势**：

@@ -1,6 +1,6 @@
-## 状态模式 (State Pattern)
+# 状态模式 (State Pattern)
 
-### 1. 场景：TCP 连接 (TCP Connection)
+## 1. 场景：TCP 连接 (TCP Connection)
 
 我们在设计一个网络连接类 `TCPConnection`。
 
@@ -28,13 +28,13 @@ public void open() {
 
 这种代码非常难以维护，尤其是当状态增多时（TCP 协议实际上有十几种状态）。
 
-### 2. 核心定义
+## 2. 核心定义
 
 > **状态模式**：允许对象在内部状态改变时改变它的行为，对象看起来好像修改了它的类。
 
-### 3. 结构与代码实现
+## 3. 结构与代码实现
 
-#### A. 状态接口 (State)
+### A. 状态接口 (State)
 
 ```java
 // 对应课件中的 TCPState 抽象类
@@ -46,7 +46,7 @@ public interface TCPState {
 }
 ```
 
-#### B. 具体状态 (Concrete States)
+### B. 具体状态 (Concrete States)
 
 ```java
 // 1. 连接已关闭状态
@@ -85,7 +85,7 @@ public class TCPEstablished implements TCPState {
 // 3. 监听状态 (TCPListen) 代码类似，略...
 ```
 
-#### C. 上下文 (Context)
+### C. 上下文 (Context)
 
 ```java
 public class TCPConnection {
@@ -118,7 +118,7 @@ public class TCPConnection {
 }
 ```
 
-#### D. 客户端使用
+### D. 客户端使用
 
 ```java
 public class Client {
@@ -140,7 +140,7 @@ public class Client {
 }
 ```
 
-### 4. 类图
+## 4. 类图
 
 ```mermaid
 classDiagram
@@ -183,14 +183,14 @@ classDiagram
     TCPConnection --> TCPState : has current state
 ```
 
-### 5. 总结
+## 5. 总结
 
 - **核心思想**：将与特定状态相关的行为局部化，并且将不同状态的行为分割开来。
 - **优点**：
   - 消除了庞大的条件分支语句
   - 让状态转换显式化（通过 `setState`）
 
-### 6. 状态模式 vs 策略模式
+## 6. 状态模式 vs 策略模式
 
 虽然类图看起来几乎一样（都是 Context 持有一个接口），但**意图**不同：
 

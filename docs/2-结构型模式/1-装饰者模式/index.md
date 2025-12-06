@@ -1,10 +1,14 @@
+# 装饰者模式 (Decorator Pattern)
+
+## 概述
+
 好的，根据课件内容，我们进入**结构型模式**的第一站：**装饰者模式 (Decorator Pattern)**。
 
 这部分内容主要集中在您的课件 `9.Decorator_Adapter.pdf` 的前半部分（第1-6页，以及最后的Java IO部分）。
 
 ---
 
-### 1. 场景：星巴克咖啡订单系统 (Starbuzz Coffee)
+## 1. 场景：星巴克咖啡订单系统 (Starbuzz Coffee)
 
 假设我们要为咖啡店设计一个订单系统。
 *   **主体饮料 (Beverage)**：深焙 (DarkRoast)、浓缩 (Espresso)、低咖啡因 (Decaf) 等。
@@ -18,7 +22,7 @@
 **核心设计原则：**
 > **开闭原则 (Open-Closed Principle)**：类应该对扩展开放，对修改关闭。
 
-### 2. 解决方案：像“俄罗斯套娃”一样包装对象
+## 2. 解决方案：像"俄罗斯套娃"一样包装对象
 
 **装饰者模式**允许我们动态地将责任附加到对象上。我们不修改代码，而是通过**包装 (Wrapping)** 的方式来扩展功能。
 
@@ -27,9 +31,9 @@
 *   想加奶泡？我们再用 `Whip` 对象把刚才的包起来。
 *   算钱的时候？最外层的对象调用里面的 `cost()`，再加上自己的钱。
 
-### 3. 代码实现
+## 3. 代码实现
 
-#### A. 抽象组件 (Component)
+### A. 抽象组件 (Component)
 
 这是所有饮料和调料的共同父类。
 
@@ -46,7 +50,7 @@ public abstract class Beverage {
 }
 ```
 
-#### B. 具体组件 (Concrete Component)
+### B. 具体组件 (Concrete Component)
 
 这是被装饰的“主体”，比如浓缩咖啡。
 
@@ -62,7 +66,7 @@ public class Espresso extends Beverage {
 }
 ```
 
-#### C. 抽象装饰者 (Decorator)
+### C. 抽象装饰者 (Decorator)
 
 这是装饰者模式最关键的一步。
 *   **继承**：它必须继承自 `Beverage`，**目的是为了“类型匹配”**（让装饰后的对象依然是一杯 Beverage，可以继续被装饰）。
@@ -76,7 +80,7 @@ public abstract class CondimentDecorator extends Beverage {
 }
 ```
 
-#### D. 具体装饰者 (Concrete Decorator)
+### D. 具体装饰者 (Concrete Decorator)
 
 比如摩卡（Mocha）。
 
@@ -102,7 +106,7 @@ public class Mocha extends CondimentDecorator {
 }
 ```
 
-### 4. 客户端如何使用（测试代码）
+## 4. 客户端如何使用（测试代码）
 
 这对应课件第3页和第5页的代码演示。
 
@@ -126,7 +130,7 @@ public class StarbuzzCoffee {
 }
 ```
 
-### 5. 课件中的重点图解（Slide 6）
+## 5. 课件中的重点图解（Slide 6）
 
 课件用一个非常形象的**同心圆/洋葱圈**图展示了调用过程：
 1.  最外层 `Whip.cost()` 被调用。
@@ -136,7 +140,7 @@ public class StarbuzzCoffee {
 5.  `Mocha` 加上自己的 $0.20，返回 $1.19。
 6.  `Whip` 加上自己的 $0.10，最终返回 $1.29。
 
-### 6. 现实世界的例子：Java I/O
+## 6. 现实世界的例子：Java I/O
 
 课件在第33-35页提到了Java类库中最著名的装饰者模式应用：`java.io` 包。
 
@@ -157,7 +161,7 @@ InputStream in =
 
 这与咖啡的例子一模一样：通过层层包装，给基本的字节流添加了缓冲和读取行号的功能。
 
-### 总结
+## 总结
 
 *   **定义**：动态地将责任附加到对象上。若要扩展功能，装饰者提供了比继承更有弹性的替代方案。
 *   **优点**：比继承灵活，可以在运行时动态决定添加什么功能；符合开闭原则。
